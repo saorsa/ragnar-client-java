@@ -1,7 +1,6 @@
-package entities;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import javax.security.sasl.AuthenticationException;
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -10,14 +9,14 @@ import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Map;
 
-public class RagnarWrapper {
+public class AIClient {
 
     private final String baseUrl;
     private final HttpClient http;
     private final ObjectMapper json;
     private String authToken;
 
-    public RagnarWrapper(String baseUrl, HttpClient http, ObjectMapper json, String authToken) {
+    public AIClient(String baseUrl, HttpClient http, ObjectMapper json, String authToken) {
         this.baseUrl = baseUrl;
         this.http = http;
         this.json = json;
@@ -39,7 +38,7 @@ public class RagnarWrapper {
         HttpResponse<String> response = http.send(request, HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() != 200) {
-            throw new RuntimeException("Authentication failed: " + response.body());
+            throw new AuthenticationException("Authentication failed: " + response.body());
         }
 
         this.authToken = json.readTree(response.body()).get("access_token").asText();
