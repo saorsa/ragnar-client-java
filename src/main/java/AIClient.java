@@ -16,11 +16,11 @@ public class AIClient {
     private final ObjectMapper json;
     private String authToken;
 
-    public AIClient(String baseUrl, HttpClient http, ObjectMapper json, String authToken) {
+    public AIClient(String baseUrl) {
         this.baseUrl = baseUrl;
-        this.http = http;
-        this.json = json;
-        this.authToken = authToken;
+        this.http = HttpClient.newHttpClient();
+        this.json = new ObjectMapper();
+
     }
 
     public void authenticate(String username, String password) throws IOException, InterruptedException {
@@ -41,7 +41,7 @@ public class AIClient {
             throw new AuthenticationException("Authentication failed: " + response.body());
         }
 
-        this.authToken = json.readTree(response.body()).get("access_token").asText();
+        this.authToken = json.readTree(response.body()).get("token").asText();
     }
 
     public String getAuthToken() {
