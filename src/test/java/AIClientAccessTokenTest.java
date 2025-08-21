@@ -10,12 +10,13 @@ public class AIClientAccessTokenTest {
     private AIClient aiClient;
     private String username;
     private String password;
+    private String baseUrl;
 
     @BeforeEach
     void setup() {
         Dotenv dotenv = Dotenv.load();
 
-        String baseUrl = dotenv.get("RAGNAR_URL");
+        baseUrl = dotenv.get("RAGNAR_URL");
         username = dotenv.get("RAGNAR_USERNAME");
         password = dotenv.get("RAGNAR_PASSWORD");
 
