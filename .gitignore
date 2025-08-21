@@ -60,3 +60,8 @@ pom.xml.versionsBackup
 # OS-specific
 .DS_Store
 Thumbs.db
+
+.env
+.env.*
+.env
+src/.env.*

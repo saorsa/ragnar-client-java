@@ -1,27 +1,32 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.cdimascio.dotenv.Dotenv;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.net.http.HttpClient;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AIClientAccessTokenTest {
 
     private AIClient aiClient;
+    private String username;
+    private String password;
+    private String baseUrl;
 
     @BeforeEach
     void setup() {
+        Dotenv dotenv = Dotenv.load();
+
+        baseUrl = dotenv.get("RAGNAR_URL");
+        username = dotenv.get("RAGNAR_USERNAME");
+        password = dotenv.get("RAGNAR_PASSWORD");
+
         aiClient = new AIClient(
-                "https://api.ragnar.saorsa.bg");
+                baseUrl);
 
     }
 
     @Test
     void authenticate_shouldReturnAccessToken() {
-        String username = "adautev@gmail.com";
-        String password = "lkfdjkj!2##!";
-
         try {
             aiClient.authenticate(username, password);
             String accessToken = aiClient.getAuthToken();
